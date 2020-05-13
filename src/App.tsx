@@ -2,10 +2,11 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import './App.css'
 import { store } from './store/store'
+import MainRouter from './router/MainRouter'
 function App () {
   return (
     <Provider store={store}>
-      <div>Stocks!</div>
+      <MainRouter />
     </Provider>
   )
 }
