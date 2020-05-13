@@ -1,7 +1,9 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import StocksReducer from '../modules/stocks/StocksReducer'
-const reducers = combineReducers({
+
+export const reducers = combineReducers({
   stocks: StocksReducer
 })
 
-export const store = createStore(reducers)
+export const store = createStore(reducers, applyMiddleware(thunk))

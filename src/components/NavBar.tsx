@@ -1,12 +1,12 @@
 import React from 'react'
 import { NavBarItem } from './NavBarItem'
-import { HOME_ROUTE, STOCK_FIINDER_ROUTE } from '../router/routes'
+import { HOME_ROUTE, STOCKS_PAGE_ROUTE } from '../router/routes'
 
 const NavBar = () => {
   return (
     <div>
       <NavBarItem route={{ to: HOME_ROUTE, name: 'home' }} />
-      <NavBarItem route={{ to: STOCK_FIINDER_ROUTE, name: 'stocks' }} />
+      <NavBarItem route={{ to: STOCKS_PAGE_ROUTE, name: 'stocks' }} />
     </div>
   )
 }

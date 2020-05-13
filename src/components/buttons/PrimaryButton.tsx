@@ -23,11 +23,12 @@ const ButtonWrapper = styled.div`
     background-color:${colors.primary};
     font-family:${fonts.primary};
     font-size:20px;
+    cursor:pointer;
     &:hover {
         background-color:${colors.primaryDarker};
     }
 `
-const PrimaryButton: React.FunctionalComponent<Props> = (props) =>  {
+const PrimaryButton: React.FunctionComponent<Props> = (props) =>  {
     if(props.withLink) {
         return <WrapperWithLink to={props.to}>
             <ButtonWrapper>{props.text}</ButtonWrapper>
