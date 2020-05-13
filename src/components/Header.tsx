@@ -7,7 +7,8 @@ const HeaderWrapper = styled.header`
     width:100%;
     justify-content:space-between;
     align-items:center;
-    padding: 20px 5%;
+    padding: 20px 0;
+    max-width:900px
 `
 export default function Header () {
   return (

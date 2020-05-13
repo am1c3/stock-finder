@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import bigCube from '../../assets/images/big_cube.svg'
 import fonts from '../../constants/fonts'
-import { STOCK_FIINDER_ROUTE } from '../../router/routes'
+import { STOCKS_PAGE_ROUTE } from '../../router/routes'
 import PrimaryButton from '../../components/buttons/PrimaryButton'
 const Wrapper = styled.div`
     display:flex;
@@ -37,7 +37,7 @@ export default function HomePage () {
       <SmallParagraph>
       Look for the sock you want.
       </SmallParagraph>
-      <PrimaryButton text='Find stocks' withLink to={STOCK_FIINDER_ROUTE} />
+      <PrimaryButton text='Find stocks' withLink to={STOCKS_PAGE_ROUTE} />
     </Wrapper>
   )
 }
