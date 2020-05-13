@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="462.111" height="428.667" viewBox="0 0 462.111 428.667">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.734" y1="0.864" x2="0.033" y2="0.875" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.133"/>
+      <stop offset="1" stop-color="gray"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_3" data-name="Group 3" transform="translate(-815.458 -147.35)">
+    <path id="Path_6" data-name="Path 6" d="M708.016,422.411v31.5l12.236,8.316V430.829Z" transform="translate(159.019 -119.804)" fill="#b0db91"/>
+    <path id="Path_35" data-name="Path 35" d="M745.8,585.7l7.644-6.224,10.492,8.3L755.3,594Z" transform="translate(127.482 -17.988)" fill="none"/>
+    <path id="Path_64" data-name="Path 64" d="M.843,0H314.569L288,135H-6.56Z" transform="translate(963 433)" fill="url(#linear-gradient)"/>
+    <g id="Group_2" data-name="Group 2" transform="translate(815.458 147.35)">
+      <path id="Path_2" data-name="Path 2" d="M39.611,39.611,208.967,0l-37.2,171.766L0,208.967Z" transform="translate(147.762 0) rotate(45)" fill="#e3e3e3"/>
+      <path id="Path_4" data-name="Path 4" d="M708.016,413.5V598.813l142.554,88.07,5.208-182.463Z" transform="translate(-708.016 -265.738)" fill="#a8a8a8"/>
+      <path id="Union_26" data-name="Union 26" d="M0,49.033V0L12.236,8.418V57.349Z" transform="translate(18.275 183.626)" fill="#ef9797"/>
+      <path id="Union_6" data-name="Union 6" d="M0,109.742V0L12.236,8.418V118.058Z" transform="translate(31.766 221.4)" fill="#ef9797"/>
+      <path id="Union_8" data-name="Union 8" d="M0,57.128V0L12.236,8.418V65.444Z" transform="translate(45.256 268.618)" fill="#b0db91"/>
+      <path id="Union_9" data-name="Union 9" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(58.747 263.222)" fill="#b0db91"/>
+      <path id="Union_10" data-name="Union 10" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(72.238 294.251)" fill="#ef9797"/>
+      <path id="Union_11" data-name="Union 11" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(85.729 323.931)" fill="#ef9797"/>
+      <path id="Union_14" data-name="Union 14" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(126.201 361.705)" fill="#ef9797"/>
+      <path id="Union_12" data-name="Union 12" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(99.22 323.931)" fill="#b0db91"/>
+      <path id="Union_13" data-name="Union 13" d="M0,42.287V0L12.236,8.418V50.6Z" transform="translate(112.711 314.487)" fill="#b0db91"/>
+      <path id="Path_5" data-name="Path 5" d="M854.674,413.5V598.813l-152.8,87.135,5.037-181.528Z" transform="translate(-559.15 -265.738)" fill="#696969"/>
+      <path id="Path_38" data-name="Path 38" d="M720.48,422.411v31.5l-12.464,8.316V430.829Z" transform="translate(-432.902 -262.673)" fill="#779362"/>
+      <path id="Union_25" data-name="Union 25" d="M0,27.956V8.418L12.463,0V51.034L0,59.35Z" transform="translate(261.372 176.626)" fill="#9d6e6e"/>
+      <path id="Union_16" data-name="Union 16" d="M0,8.316V118.058l12.463-8.418V0Z" transform="translate(260.094 334.459) rotate(180)" fill="#9d6e6e"/>
+      <path id="Union_18" data-name="Union 18" d="M0,8.316V65.444l12.463-8.418V0Z" transform="translate(246.352 329.062) rotate(180)" fill="#779362"/>
+      <path id="Union_19" data-name="Union 19" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(232.61 308.826) rotate(180)" fill="#779362"/>
+      <path id="Union_20" data-name="Union 20" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(218.868 339.855) rotate(180)" fill="#9d6e6e"/>
+      <path id="Union_21" data-name="Union 21" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(205.126 369.535) rotate(180)" fill="#9d6e6e"/>
+      <path id="Union_24" data-name="Union 24" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(163.9 407.309) rotate(180)" fill="#9d6e6e"/>
+      <path id="Union_22" data-name="Union 22" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(191.384 369.535) rotate(180)" fill="#779362"/>
+      <path id="Union_23" data-name="Union 23" d="M0,8.317V50.6l12.463-8.418V0Z" transform="translate(177.642 360.091) rotate(180)" fill="#779362"/>
+    </g>
+  </g>
+</svg>
