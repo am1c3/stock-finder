@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import bigCube from '../../assets/images/big_cube.svg'
 import fonts from '../../constants/fonts'
+import { STOCK_FIINDER_ROUTE } from '../../router/routes'
+import PrimaryButton from '../../components/buttons/PrimaryButton'
 const Wrapper = styled.div`
     display:flex;
     flex-direction:column;
@@ -21,6 +23,9 @@ const SmallParagraph = styled.p`
     margin:0;
     margin-top:20px;
     text-align:center;
+    margin-bottom:40px;
+    transition: background-color .3s ease;
+   
 `
 export default function HomePage () {
   return (
@@ -32,6 +37,7 @@ export default function HomePage () {
       <SmallParagraph>
       Look for the sock you want.
       </SmallParagraph>
+      <PrimaryButton text='Find stocks' withLink to={STOCK_FIINDER_ROUTE} />
     </Wrapper>
   )
 }
