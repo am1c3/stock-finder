@@ -20,12 +20,16 @@ const Wrapper = styled(Link)`
     margin-bottom:12px;
     font-family:${fonts.primary};
     cursor:pointer;
+    @media only screen and (max-width: 600px) {
+        padding:24px 24px;
+      }
 
 `
 const LeftSide = styled.div`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+    flex:1;
 
 `
 const Symbol = styled.div`
@@ -34,12 +38,16 @@ const Symbol = styled.div`
 `
 const Name = styled.div`
     font-size:18px;
+    margin-top:12px;
 `
 const RightSide = styled.div`
     display:flex;
     flex-direction:column;
-    align-items:center;
-    justify-content:center;
+    align-items:flex-end;
+    flex:1;
+    @media only screen and (max-width: 950px) {
+        display:none;
+    }
 `
 const SingleSearchResult: React.FunctionComponent<Props> = (props) =>  {
     const {item, path} = props
@@ -54,6 +62,8 @@ const SingleSearchResult: React.FunctionComponent<Props> = (props) =>  {
             </Name>
             </LeftSide>
             <RightSide>
+                <div>
+
             <div>
                 {item.location}
             </div>
@@ -61,6 +71,8 @@ const SingleSearchResult: React.FunctionComponent<Props> = (props) =>  {
             <div>
                 {item.currency}
             </div>
+            </div>
+
             </RightSide>
            
            

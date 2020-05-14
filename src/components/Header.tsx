@@ -8,7 +8,10 @@ const HeaderWrapper = styled.header`
     justify-content:space-between;
     align-items:center;
     padding: 20px 0;
-    max-width:900px
+    max-width:900px;
+    @media only screen and (max-width: 380px) {
+      flex-direction:column;
+    }
 `
 export default function Header () {
   return (

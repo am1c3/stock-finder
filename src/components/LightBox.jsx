@@ -15,6 +15,9 @@ const Title = styled.div`
   margin-left:48px;
   font-weight:bold;
   color:rgba(0,0,0,0.6);
+  @media only screen and (max-width: 950px) {
+   margin-left:24px;
+}
 `
 
 const LightBox = ({ children, title }) => {

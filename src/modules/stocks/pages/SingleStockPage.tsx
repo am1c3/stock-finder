@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
+import Switch from 'react-switch'
 import Plot from 'react-plotly.js'
 import { connect } from 'react-redux'
 import { RootState } from '../../../store/types'
@@ -9,11 +10,10 @@ import colors from '../../../constants/colors'
 import fonts from '../../../constants/fonts'
 import timezone from '../../../assets/icons/time.svg'
 import location from '../../../assets/icons/location.svg'
-import money from '../../../assets/icons/money.svg'
 import Select from '../../../components/Select'
 import Loader from '../../../components/Loader'
-import PrimaryButton from '../../../components/buttons/PrimaryButton'
 import ErrorDialog from '../../../components/ErrorDialog'
+import arrowLeft from '../../../assets/icons/arrow-left.svg'
 const Wrapper = styled.div`
     display:flex;
     flex-direction:column;
@@ -28,6 +28,11 @@ const TopSide = styled.aside`
   justify-content:space-between;
   background-color:${colors.primary};
   border-radius:25px;
+  min-height:100px;
+  @media only screen and (max-width: 500px) {
+    justify-content:center;
+    position:relative;
+  }
 `
 const BottomSide = styled.div`
   flex:1;
@@ -43,8 +48,13 @@ const Symbol = styled.div`
   font-size:30px;
   font-weight:bold;
   letter-spacing:2px;
+ 
+
 `
 const Details = styled.div`
+  @media only screen and (max-width: 500px) {
+  display:none;
+  }
 `
 const DetailsItem = styled.div`
   display:flex;
@@ -60,8 +70,15 @@ const Filters = styled.div`
   width:100%;
   display:flex;
   margin-bottom:24px;
+  @media only screen and (max-width: 500px) {
+    flex-direction:column;
+  }
+
 `
 const FilterValue = styled.div`
+  min-height:40px;
+  display:flex;
+  align-items:center;
 `
 const FilterLabel = styled.label`
   color:rgba(0,0,0,0.8);
@@ -72,25 +89,57 @@ const Filter = styled.div`
   display:flex;
   flex-direction:column;
   margin-right:12px;
+  @media only screen and (max-width: 500px) {
+    margin-right:0;
+    margin-top:12px;
+  }
 `
+const GoBack = styled.img`
+  display:none;
+  width:50px;
+  height:50px;
+  @media only screen and (max-width: 500px) {
+    display:block;
+  }
+  position:absolute;
+  left:12px;
+  top:calc(50% - 25px);
+`
+
+
 function SingleStockPage(props) {
-  const [type, setType] = useState('TIME_SERIES_DAILY')
+  const history = useHistory()
+  const [graphType, setGraphType] = useState(
+    {
+      label: 'Plotify',
+      value: 'plotify'
+    },
+  )
+  const [type, setType] = useState( {
+    label: 'Daily',
+    value: 'TIME_SERIES_DAILY'
+  })
+  const [showAverage, setShowAverage] = useState(false)
+  const toggleAverage = () => {
+    setShowAverage(!showAverage)
+  }
   const { id } = useParams()
+
   useEffect(() => {
-    props.getStockInfo(type, id)
+    props.getStockInfo(type.value, id)
   }, [type])
   const { stockInfo, stockInfoError, stockInfoLoading } = props
-  if (stockInfoLoading) {
-    return <Loader />
-  }
+
   if (stockInfoError) {
     return <ErrorDialog description={stockInfoError} onClick={() => {
       props.getStockInfo(type, id)
     }} buttonText='Retry' />
   }
+  const mean = stockInfo.values.reduce((acumulator, currentValue) => { return +currentValue.open + acumulator }, 0) / stockInfo.values.length
   return (
     <Wrapper>
       <TopSide>
+        <GoBack onClick={() => history.goBack()} src={arrowLeft} />
         <Symbol>{stockInfo.meta.symbol}</Symbol>
         <Details>
           <DetailsItem>
@@ -105,23 +154,38 @@ function SingleStockPage(props) {
 
         </Details>
 
+
       </TopSide>
       <BottomSide>
         <Filters>
           <Filter>
             <FilterLabel>Time frame</FilterLabel>
             <FilterValue>
-              <Select options={[{
-                label: 'dada',
-                value: 'dada'
-              }
-              ]} />
+              <Select
+                value={type}
+                onChange={(value) => setType(value)}
+                options={[
+                  {
+                    label: 'Daily',
+                    value: 'TIME_SERIES_DAILY'
+                  },
+                  {
+                    label: 'Weekly',
+                    value: 'TIME_SERIES_WEEKLY'
+                  },
+                  {
+                    label: 'Monthly',
+                    value: 'TIME_SERIES_MONTHLY'
+                  }
+                ]} />
             </FilterValue>
           </Filter>
           <Filter>
             <FilterLabel>Graph type</FilterLabel>
             <FilterValue>
-              <Select options={[
+              <Select value={graphType}
+              onChange={(value) => setGraphType(value)}
+              options={[
                 {
                   label: 'Plotify',
                   value: 'plotify'
@@ -133,21 +197,44 @@ function SingleStockPage(props) {
               ]} />
             </FilterValue>
           </Filter>
+          <Filter>
+            <FilterLabel>Show average</FilterLabel>
+            <FilterValue>
+              <Switch checked={showAverage} onChange={toggleAverage} onColor={colors.primary} />
+            </FilterValue>
+          </Filter>
 
 
         </Filters>
-        <Plot
-          data={[
-            {
-              x: stockInfo.values.map(item => item.date),
-              y: stockInfo.values.map(item => item.open),
-              type: 'scatter',
-              mode: 'lines+markers',
-              marker: { color: 'red' },
-            },
-          ]}
-          layout={{ width: 854, height: 440 }}
-        />
+        <div style={{overflowX:'scroll', maxWidth:'100%'}}>
+
+        {
+          stockInfoLoading ? <Loader /> :
+            <Plot
+              data={[
+                {
+                  x: stockInfo.values.map(item => item.date),
+                  y: stockInfo.values.map(item => item.open),
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  marker: { color: 'red' },
+                  name: 'Open value'
+                },
+                showAverage ? {
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  x: [stockInfo.values[stockInfo.values.length - 1] && stockInfo.values[stockInfo.values.length - 1].date, stockInfo.values[0] && stockInfo.values[0].date],
+                  y: [mean, mean],
+                  marker: { color: 'blue' },
+                  name: 'Average'
+                } : {}
+              ]}
+              layout={{ width: 854, height: 440 }}
+            />
+        }
+        </div>
+
+
       </BottomSide>
     </Wrapper>
   )
