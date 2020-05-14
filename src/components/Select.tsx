@@ -1,26 +1,43 @@
 import React from 'react'
 import styled from 'styled-components'
 import fonts from '../constants/fonts'
-const SelectWrapper = styled.select`
-    min-width:150px;
-    height:40px;
-    padding:24px;
-    border:none;
-    font-size:14px;
-    box-shadow: 1px 1px 6px rgba(0,0,0,0.15);
-    font-family:${fonts.primary};
+import Select from 'react-select'
+import colors from '../constants/colors';
+interface Props {
+  value:string;
+  onChange: ((value:string) => void );
+}
+const styles = {
+  option: (styles, state) =>  ({
+      ...styles,
+      backgroundColor: state.isSelected ? colors.primary : null,
+      color: state.isSelected? 'white' : 'black'
+    })
+};
+const SelectWrapper = styled.div`
+    .react-select-container {
+      min-width:200px;
+    }
+    @media only screen and (max-width: 500px) {
+      width:100%;
+    }
 `
 const Option = styled.option`
     height:40px;
 `
-export default function Select (props) {
-  const { options } = props
+export default function CustomSelect (props) {
+  const { options, value, onChange } = props
   return (
     <SelectWrapper>
-      {options.map((item, index) => (
-        <Option key={index} value={item.value}>
-          {item.label}
-        </Option>))}
+      <Select 
+      className='react-select-container'
+      classNamePrefix="react-select"
+        value={value}
+        options={options}
+        onChange={onChange}
+        styles={styles}
+      />
     </SelectWrapper>
+
   )
 }

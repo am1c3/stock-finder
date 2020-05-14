@@ -1,29 +1,31 @@
-import React, { useState, useRef,useEffect } from 'react'
-import {connect} from 'react-redux'
+import React, { useState, useRef, useEffect } from 'react'
+import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import SearchBar from '../../../components/SearchBar'
 import StockSearchResults from '../StockSearchResults'
 import { RootState } from '../../../store/types'
-import {searchStocksBySymbol, clearSearchList} from '../StocksActions'
+import { searchStocksBySymbol, clearSearchList } from '../StocksActions'
+import ErrorDialog from '../../../components/ErrorDialog'
 
-function StockSearchPage (props) {
+function StockSearchPage(props) {
   const [value, setValue] = useState('')
+  const {searchError, stocks, searchLoading, clearSearchList, searchStocksBySymbol} = props
   useEffect(() => {
     return () => {
-      props.clearSearchList()
+      clearSearchList()
     };
   }, [])
   const searchForStock = (value) => {
-    props.searchStocksBySymbol(value)
+    searchStocksBySymbol(value)
   }
   const debouncedSearch = useRef(
     debounce(value => searchForStock(value), 300)
   ).current
-  const searchValueChanged = (value:string) => {
+  const searchValueChanged = (value: string) => {
     setValue(value)
-    if(value === '') {
+    if (value === '') {
       props.clearSearchList()
-    }  else {
+    } else {
 
       debouncedSearch(value)
     }
@@ -33,17 +35,24 @@ function StockSearchPage (props) {
       <SearchBar
         placeholder='Enter symbol'
         withClear
-        onClear={()=> props.clearSearchList()}
-        value={value} onChange={(value:string) => searchValueChanged(value)}
+        onClear={() => clearSearchList()}
+        value={value} onChange={(value: string) => searchValueChanged(value)}
       />
       <div style={{ height: 24 }} />
-      <StockSearchResults results={props.stocks}  loading={props.searchLoading}  />
+      {searchError ?
+        <ErrorDialog description={searchError} onClick={() => {
+          searchValueChanged(value)
+        }} buttonText='Retry' />
+        : <StockSearchResults results={stocks} loading={searchLoading} />
+      }
+
     </>
   )
 }
 const mapState = (state: RootState) => ({
   stocks: state.stocks.stocks,
   searchLoading: state.stocks.searchLoading,
+  searchError: state.stocks.searchError
 })
 
 const mapDispatch = {

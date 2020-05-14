@@ -19,17 +19,24 @@ const Input = styled.input`
     height:70px;
     width:100%;
     color:white;
-    font-size:30px;
+    font-size:24px;
     &::placeholder {
         color:rgba(255,255,255,0.6);
     }
+    @media only screen and (max-width: 950px) {
+        padding: 0px 24px;
+    }
+    
 `
 const SearchIcon = styled.img`
-    width:40px;
-    height:40px;
+    width:30px;
+    height:30px;
     position:absolute;
     right:48px;
-    bottom:calc(50% - 20px);
+    bottom:calc(50% - 15px);
+    @media only screen and (max-width: 500px) {
+        right:24px;
+    }
     ${({withClear}) => withClear && 'cursor:pointer;'}
 `
 interface Props {

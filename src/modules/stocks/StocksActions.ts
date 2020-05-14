@@ -40,7 +40,15 @@ export const getStockInfo = ( type: string, symbol:string): AppThunk => async (d
       })
       return
     }
-      const resultValues = result.data['Time Series (Daily)']
+      let dataType = 'Time Series (Daily)'
+      if(type === 'TIME_SERIES_MONTHLY') {
+        dataType = 'Monthly Time Series'
+      }
+      if(type === 'TIME_SERIES_WEEKLY') {
+        dataType = 'Weekly Time Series'
+
+      }
+      const resultValues = result.data[dataType]
       dispatch({
         type: GET_STOCK_INFO_SUCCESS,
         payload: {
@@ -48,7 +56,7 @@ export const getStockInfo = ( type: string, symbol:string): AppThunk => async (d
             info:result.data['Meta Data']['1. Information'],
             symbol:result.data['Meta Data']['2. Symbol'],
             lastRefreshed:result.data['Meta Data']['3. Last Refreshed'],
-            timezone:result.data['Meta Data']['5. Time Zone']
+            timezone:result.data['Meta Data']['5. Time Zone'] || result.data['Meta Data']['4. Time Zone']
           },
           values: Object.keys(resultValues).map(key => ({
             date:key,
@@ -80,11 +88,20 @@ export const searchStocksBySymbol = ( keywords:string): AppThunk => async (dispa
       url: `${ALPHA_VENTAGE_API_URL}&function=SYMBOL_SEARCH&keywords=${keywords}`
     })
     const {bestMatches} = result.data
-    if(!bestMatches) {
+   
+    if(result.data['Error Message']) {
       dispatch({
         type: SEARCH_STOCK_BY_SYMBOL_FAIL,
-        payload: 'No match found'
+        payload: result.data['Error Message']
       })
+      return
+    }
+    if(result.data['Note']) {
+      dispatch({
+        type: SEARCH_STOCK_BY_SYMBOL_FAIL,
+        payload: result.data['Note']
+      })
+      return
     }
     dispatch({
       type: SEARCH_STOCK_BY_SYMBOL_SUCCESS,

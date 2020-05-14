@@ -13,6 +13,9 @@ const Wrapper = styled(Link)`
     ${({active}) => active && `
         color:rgba(0,0,0,1);
     `}
+    @media only screen and (max-width: 500px) {
+        margin-left:12px;
+    }
 `
 interface Props {
     route: {
