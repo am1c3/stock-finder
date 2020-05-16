@@ -35,7 +35,7 @@ export default function HomePage () {
       All essential data gathered in one place
       </BigParagraph>
       <SmallParagraph>
-      Look for the sock you want.
+      Look for the stock you want.
       </SmallParagraph>
       <PrimaryButton text='Find stocks' withLink to={STOCKS_PAGE_ROUTE} />
     </Wrapper>

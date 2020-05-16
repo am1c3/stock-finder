@@ -14,6 +14,8 @@ import Select from '../../../components/Select'
 import Loader from '../../../components/Loader'
 import ErrorDialog from '../../../components/ErrorDialog'
 import arrowLeft from '../../../assets/icons/arrow-left.svg'
+import Plotly from '../graphs/Plotly'
+import D3Stock from '../graphs/D3Stock'
 const Wrapper = styled.div`
     display:flex;
     flex-direction:column;
@@ -115,7 +117,7 @@ function SingleStockPage(props) {
       value: 'plotify'
     },
   )
-  const [type, setType] = useState( {
+  const [type, setType] = useState({
     label: 'Daily',
     value: 'TIME_SERIES_DAILY'
   })
@@ -132,7 +134,7 @@ function SingleStockPage(props) {
 
   if (stockInfoError) {
     return <ErrorDialog description={stockInfoError} onClick={() => {
-      props.getStockInfo(type, id)
+      props.getStockInfo(type.value, id)
     }} buttonText='Retry' />
   }
   const mean = stockInfo.values.reduce((acumulator, currentValue) => { return +currentValue.open + acumulator }, 0) / stockInfo.values.length
@@ -184,17 +186,17 @@ function SingleStockPage(props) {
             <FilterLabel>Graph type</FilterLabel>
             <FilterValue>
               <Select value={graphType}
-              onChange={(value) => setGraphType(value)}
-              options={[
-                {
-                  label: 'Plotify',
-                  value: 'plotify'
-                },
-                {
-                  label: 'Custom',
-                  value: 'custom'
-                }
-              ]} />
+                onChange={(value) => setGraphType(value)}
+                options={[
+                  {
+                    label: 'Plotify',
+                    value: 'plotify'
+                  },
+                  {
+                    label: 'D3',
+                    value: 'd3'
+                  }
+                ]} />
             </FilterValue>
           </Filter>
           <Filter>
@@ -203,35 +205,22 @@ function SingleStockPage(props) {
               <Switch checked={showAverage} onChange={toggleAverage} onColor={colors.primary} />
             </FilterValue>
           </Filter>
+         
 
 
         </Filters>
-        <div style={{overflowX:'scroll', maxWidth:'100%'}}>
+        <div style={{ overflowX: 'scroll', maxWidth: '100%', width: '100%', minHeight: 200 }}>
 
-        {
-          stockInfoLoading ? <Loader /> :
-            <Plot
-              data={[
+          {
+            stockInfoLoading ? <Loader /> :
+              <>
                 {
-                  x: stockInfo.values.map(item => item.date),
-                  y: stockInfo.values.map(item => item.open),
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  marker: { color: 'red' },
-                  name: 'Open value'
-                },
-                showAverage ? {
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  x: [stockInfo.values[stockInfo.values.length - 1] && stockInfo.values[stockInfo.values.length - 1].date, stockInfo.values[0] && stockInfo.values[0].date],
-                  y: [mean, mean],
-                  marker: { color: 'blue' },
-                  name: 'Average'
-                } : {}
-              ]}
-              layout={{ width: 854, height: 440 }}
-            />
-        }
+                  graphType.value === 'd3' ? <D3Stock stockInfo={stockInfo} showAverage={showAverage} mean={mean} />
+                    :
+                    <Plotly stockInfo={stockInfo} showAverage={showAverage} mean={mean} />}
+              </>
+
+          }
         </div>
 
 

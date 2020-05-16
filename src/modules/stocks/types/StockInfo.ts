@@ -17,4 +17,5 @@ interface StockValue {
     low:string;
     close:string;
     volume:string;
+    date:string;
 }
