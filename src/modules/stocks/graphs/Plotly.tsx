@@ -1,19 +1,20 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
-import { StockInfo } from '../types/StockInfo'
+import { StockInfo, StockValue } from '../types/StockInfo'
 interface Props {
-    stockInfo: StockInfo
-    mean: number;
+    data: StockValue[]
+    averageData: StockValue[];
+    averageValueLabel:string;
     showAverage:boolean;
 }
 const Plotly: React.FunctionComponent<Props> = (props) =>  {
-    const {stockInfo, mean, showAverage} = props
+    const {data, averageData, showAverage, averageValueLabel} = props
     return (
         <Plot
         data={[
           {
-            x: stockInfo.values.map(item => item.date),
-            y: stockInfo.values.map(item => item.open),
+            x: data.map(item => item.date),
+            y: data.map(item => item.open),
             type: 'scatter',
             mode: 'lines+markers',
             marker: { color: 'red' },
@@ -22,8 +23,8 @@ const Plotly: React.FunctionComponent<Props> = (props) =>  {
           showAverage ? {
             type: 'scatter',
             mode: 'lines+markers',
-            x: [stockInfo.values[stockInfo.values.length - 1] && stockInfo.values[stockInfo.values.length - 1].date, stockInfo.values[0] && stockInfo.values[0].date],
-            y: [mean, mean],
+            x:averageData.map(item => item.date),
+            y: averageData.map(item => item[averageValueLabel]),
             marker: { color: 'blue' },
             name: 'Average'
           } : {}
