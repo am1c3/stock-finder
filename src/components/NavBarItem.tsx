@@ -25,8 +25,13 @@ interface Props {
 }
 export const NavBarItem : React.FunctionComponent<Props> = ({route}) =>  {
     let location = useLocation();
+    let active = location.pathname.includes(route.to)
+    console.log(location.pathname, route.to)
+    if(route.to === '/' && location.pathname !== route.to) {
+        active = false
+    }
     return (
-        <Wrapper to={route.to} active={location.pathname === route.to}>
+        <Wrapper to={route.to} active={active}>
             {route.name}
         </Wrapper>
     )

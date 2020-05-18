@@ -14,6 +14,10 @@ import Select from '../../../components/Select'
 import Loader from '../../../components/Loader'
 import ErrorDialog from '../../../components/ErrorDialog'
 import arrowLeft from '../../../assets/icons/arrow-left.svg'
+import Plotly from '../graphs/Plotly'
+import D3Stock from '../graphs/D3Stock'
+import { getMedianInBuckets } from '../../../helpers/dataManipulation'
+import Slider from '../../../components/Slider'
 const Wrapper = styled.div`
     display:flex;
     flex-direction:column;
@@ -70,6 +74,7 @@ const Filters = styled.div`
   width:100%;
   display:flex;
   margin-bottom:24px;
+  flex-wrap:wrap;
   @media only screen and (max-width: 500px) {
     flex-direction:column;
   }
@@ -89,6 +94,7 @@ const Filter = styled.div`
   display:flex;
   flex-direction:column;
   margin-right:12px;
+  margin-bottom:12px;
   @media only screen and (max-width: 500px) {
     margin-right:0;
     margin-top:12px;
@@ -109,13 +115,20 @@ const GoBack = styled.img`
 
 function SingleStockPage(props) {
   const history = useHistory()
-  const [graphType, setGraphType] = useState(
+  const [bucketSize, setBucketSize] = useState(3)
+  const [graphComponentType, setGraphComponentType] = useState(
     {
-      label: 'Plotify',
-      value: 'plotify'
+      label: 'D3',
+      value: 'd3'
     },
   )
-  const [type, setType] = useState( {
+  const [graphType, setGraphType] = useState(
+    {
+      label: 'Candlesticks',
+      value: 'candlesticks'
+    },
+  )
+  const [type, setType] = useState({
     label: 'Daily',
     value: 'TIME_SERIES_DAILY'
   })
@@ -128,14 +141,21 @@ function SingleStockPage(props) {
   useEffect(() => {
     props.getStockInfo(type.value, id)
   }, [type])
-  const { stockInfo, stockInfoError, stockInfoLoading } = props
 
+  const { stockInfo, stockInfoError, stockInfoLoading } = props
+  const data = stockInfo.values.map((item, index) => ({
+    high: +item.high,
+    low: +item.low,
+    close: +item.close,
+    open: +item.open,
+    date: new Date(item.date)
+  }))
   if (stockInfoError) {
     return <ErrorDialog description={stockInfoError} onClick={() => {
-      props.getStockInfo(type, id)
+      props.getStockInfo(type.value, id)
     }} buttonText='Retry' />
   }
-  const mean = stockInfo.values.reduce((acumulator, currentValue) => { return +currentValue.open + acumulator }, 0) / stockInfo.values.length
+  const average = getMedianInBuckets(data, bucketSize, 'open')
   return (
     <Wrapper>
       <TopSide>
@@ -181,57 +201,65 @@ function SingleStockPage(props) {
             </FilterValue>
           </Filter>
           <Filter>
+            <FilterLabel>Component type</FilterLabel>
+            <FilterValue>
+              <Select value={graphComponentType}
+                onChange={(value) => setGraphComponentType(value)}
+                options={[
+                  {
+                    label: 'Plotify',
+                    value: 'plotify'
+                  },
+                  {
+                    label: 'D3',
+                    value: 'd3'
+                  }
+                ]} />
+            </FilterValue>
+          </Filter>
+          {graphComponentType.value ==='d3' && <Filter>
             <FilterLabel>Graph type</FilterLabel>
             <FilterValue>
               <Select value={graphType}
-              onChange={(value) => setGraphType(value)}
-              options={[
-                {
-                  label: 'Plotify',
-                  value: 'plotify'
-                },
-                {
-                  label: 'Custom',
-                  value: 'custom'
-                }
-              ]} />
+                onChange={(value) => setGraphType(value)}
+                options={[
+                  {
+                    label: 'Candlesticks',
+                    value: 'candlesticks'
+                  },
+                  {
+                    label: 'Line',
+                    value: 'line'
+                  }
+                ]} />
             </FilterValue>
-          </Filter>
+          </Filter>}
           <Filter>
             <FilterLabel>Show average</FilterLabel>
             <FilterValue>
               <Switch checked={showAverage} onChange={toggleAverage} onColor={colors.primary} />
             </FilterValue>
           </Filter>
-
+          {showAverage && <Filter>
+            <FilterLabel>Average bucket size</FilterLabel>
+            <FilterValue>
+              <Slider value={bucketSize} min={2} max={data.length} onChange={(value) => {setBucketSize(value)}}/>
+            </FilterValue>
+          </Filter>}
 
         </Filters>
-        <div style={{overflowX:'scroll', maxWidth:'100%'}}>
+        <div style={{ overflowX: 'scroll', maxWidth: '100%', width: '100%', minHeight: 200 }}>
 
-        {
-          stockInfoLoading ? <Loader /> :
-            <Plot
-              data={[
+          {
+            stockInfoLoading ? <Loader /> :
+              <>
                 {
-                  x: stockInfo.values.map(item => item.date),
-                  y: stockInfo.values.map(item => item.open),
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  marker: { color: 'red' },
-                  name: 'Open value'
-                },
-                showAverage ? {
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  x: [stockInfo.values[stockInfo.values.length - 1] && stockInfo.values[stockInfo.values.length - 1].date, stockInfo.values[0] && stockInfo.values[0].date],
-                  y: [mean, mean],
-                  marker: { color: 'blue' },
-                  name: 'Average'
-                } : {}
-              ]}
-              layout={{ width: 854, height: 440 }}
-            />
-        }
+                  graphComponentType.value === 'd3' ? <D3Stock data={data} showAverage={showAverage} averageData={average} averageValueLabel={'open'} graphType={graphType.value} />
+                    :
+                    <Plotly data={data} showAverage={showAverage} averageData={average} averageValueLabel={'open'} />}
+              </>
+
+          }
         </div>
 
 

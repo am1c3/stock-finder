@@ -11,10 +11,11 @@ interface Meta {
     timezone:string;
 }
 
-interface StockValue {
+export interface StockValue {
     open:string;
     high:string;
     low:string;
     close:string;
     volume:string;
+    date:string;
 }

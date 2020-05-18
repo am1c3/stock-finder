@@ -21,6 +21,14 @@ export const getStockInfo = ( type: string, symbol:string): AppThunk => async (d
   dispatch({
     type: GET_STOCK_INFO
   })
+  let cachedData = localStorage.getItem(type+symbol)
+  if(cachedData) {
+    dispatch({
+      type:GET_STOCK_INFO_SUCCESS,
+      payload: JSON.parse(cachedData)
+    })
+    return
+  }
   try {
     const result = await axios({
       method: 'get',
@@ -49,25 +57,26 @@ export const getStockInfo = ( type: string, symbol:string): AppThunk => async (d
 
       }
       const resultValues = result.data[dataType]
+      const payload= {
+        meta: {
+          info:result.data['Meta Data']['1. Information'],
+          symbol:result.data['Meta Data']['2. Symbol'],
+          lastRefreshed:result.data['Meta Data']['3. Last Refreshed'],
+          timezone:result.data['Meta Data']['5. Time Zone'] || result.data['Meta Data']['4. Time Zone']
+        },
+        values: Object.keys(resultValues).map(key => ({
+          date:key,
+          open: resultValues[key]['1. open'],
+          close: resultValues[key]['4. close'],
+          high: resultValues[key]['2. high'],
+          low: resultValues[key]['3. low'],
+          volume: resultValues[key]['5. volume'],
+        }))
+      }
+      localStorage.setItem(type+symbol, JSON.stringify(payload))
       dispatch({
         type: GET_STOCK_INFO_SUCCESS,
-        payload: {
-          meta: {
-            info:result.data['Meta Data']['1. Information'],
-            symbol:result.data['Meta Data']['2. Symbol'],
-            lastRefreshed:result.data['Meta Data']['3. Last Refreshed'],
-            timezone:result.data['Meta Data']['5. Time Zone'] || result.data['Meta Data']['4. Time Zone']
-          },
-          values: Object.keys(resultValues).map(key => ({
-            date:key,
-            open: resultValues[key]['1. open'],
-            close: resultValues[key]['4. close'],
-            high: resultValues[key]['2. high'],
-            low: resultValues[key]['3. low'],
-            volume: resultValues[key]['5. volume'],
-          }))
-        }
-      })
+        payload })
   } catch (e) {
     dispatch({
       type: GET_STOCK_INFO_FAIL,

@@ -3,9 +3,14 @@ import styled from 'styled-components'
 import fonts from '../constants/fonts'
 import Select from 'react-select'
 import colors from '../constants/colors';
-interface Props {
+interface SingleOption {
   value:string;
-  onChange: ((value:string) => void );
+  label:string;
+}
+interface Props {
+  value:SingleOption;
+  onChange: ((value:SingleOption) => void );
+  options: SingleOption[]
 }
 const styles = {
   option: (styles, state) =>  ({
@@ -25,7 +30,7 @@ const SelectWrapper = styled.div`
 const Option = styled.option`
     height:40px;
 `
-export default function CustomSelect (props) {
+const CustomSelect: React.FunctionComponent<Props> = (props) => {
   const { options, value, onChange } = props
   return (
     <SelectWrapper>
@@ -41,3 +46,4 @@ export default function CustomSelect (props) {
 
   )
 }
+export default CustomSelect
