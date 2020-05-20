@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, useLocation } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import StockSearchPage from './pages/StockSearchPage'
 import SingleStockPage from './pages/SingleStockPage'
 import { STOCKS_PAGE_ROUTE } from '../../router/routes'

@@ -1,6 +1,6 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
-import { StockInfo, StockValue } from '../types/StockInfo'
+import { StockValue } from '../types/StockInfo'
 interface Props {
     data: StockValue[]
     averageData: StockValue[];

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch, BrowserHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import { STOCKS_PAGE_ROUTE, HOME_ROUTE } from './routes'
 import StocksRouter from '../modules/stocks/StocksRouter'

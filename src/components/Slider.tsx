@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import fonts from '../constants/fonts';
+import colors from '../constants/colors';
 const Wrapper = styled.div`
   position:relative;
   min-width:200px;
@@ -9,7 +10,7 @@ const Wrapper = styled.div`
   }
 `
 const InputWrapper = styled.input`
-  border: 1px solid hsl(0,0%,80%);
+  border: 1px solid ${colors.border};
   border-radius:4px;
   height:36px;
   width:100%;
@@ -20,7 +21,7 @@ const Value = styled.div`
   top:-7px;
   right:2px;
   font-family: ${fonts.primary};
-  color: rgb(51, 51, 51);
+  color: ${colors.text};
 `
 interface Props {
   value: number;

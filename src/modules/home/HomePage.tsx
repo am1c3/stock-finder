@@ -30,7 +30,7 @@ const SmallParagraph = styled.p`
 export default function HomePage () {
   return (
     <Wrapper>
-      <img src={bigCube} style={{ width: 300, height: 300, marginLeft: 120 }} />
+      <img alt='big cube' src={bigCube} style={{ width: 300, height: 300, marginLeft: 120 }} />
       <BigParagraph>
       All essential data gathered in one place
       </BigParagraph>

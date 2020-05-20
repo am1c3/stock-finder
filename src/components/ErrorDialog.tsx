@@ -4,7 +4,6 @@ import error from '../assets/icons/error.svg'
 import PrimaryButton from './buttons/PrimaryButton'
 import fonts from '../constants/fonts'
 interface Props {
-    title: string;
     description: string;
     buttonText: string;
     onClick: (() => void);
@@ -26,9 +25,8 @@ const Icon = styled.img`
     width:200px;
     height:200px;
 `
-const Button = styled.div``
-export default function ErrorDialog(props) {
-    const { title, description, buttonText, onClick } = props
+const ErrorDialog: React.FunctionComponent<Props> = (props) => {
+    const { description, buttonText, onClick } = props
     return (
         <Wrapper>
             <Icon src={error} />
@@ -37,3 +35,4 @@ export default function ErrorDialog(props) {
         </Wrapper>
     )
 }
+export default ErrorDialog

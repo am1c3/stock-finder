@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import * as d3 from 'd3'
-import { StockInfo, StockValue } from '../types/StockInfo';
+import { StockValue } from '../types/StockInfo';
 import colors from '../../../constants/colors';
 import fonts from '../../../constants/fonts';
 import scroll from '../../../assets/images/scroll.png'
@@ -178,14 +178,25 @@ const D3Stock: React.FunctionComponent<Props> = (props) => {
         return [gX,gY]
   }
   const createCandlesticks = (svg, data, x, y) => {
+    let candleWidth = ((width / data.length) - 5) / 2 
+    let lineWidth = candleWidth/2
+    if(candleWidth < 1) {
+      candleWidth = 1
+      lineWidth = 0.5
+    }
+    if(candleWidth > 6) {
+      candleWidth = 6
+      lineWidth = 3
+    }
+
     svg
     .append('g')
     .selectAll("rect")
     .data(data)
     .enter().append("rect")
-    .attr('width', '3px')
+    .attr('width', `${candleWidth}px`)
     .attr("y", function(d) {return y(d3.max([d.open, d.close]));})
-    .attr("x", function (d) { return x(d.date) })
+    .attr("x", function (d) { return x(d.date)  })
     .attr("height", function(d) { 
       return Math.abs(y(d.open) - y(d.close))})
     .classed("rise", function(d) { return (d.open < d.close); })
@@ -194,9 +205,9 @@ const D3Stock: React.FunctionComponent<Props> = (props) => {
     .selectAll("rect")
     .data(data)
     .enter().append("rect")
-    .attr('width', '1px')
+    .attr('width', `${lineWidth}px`)
     .attr("y", function(d) { return y(d.high); })
-    .attr("x", function (d) { return x(d.date) + 1 })
+    .attr("x", function (d) { return x(d.date) + lineWidth /2 })
       .attr("height", function(d) { return Math.abs(y(d.high) - y(d.low)) })
       .classed("rise", function(d) { return (d.close>d.open); })
       .classed("fall", function(d) { return (d.open>d.close); })

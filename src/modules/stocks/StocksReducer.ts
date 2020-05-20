@@ -1,5 +1,4 @@
 import { StockState } from "./types/StockState";
-import {Action} from 'redux'
 import { SEARCH_STOCK_BY_SYMBOL_SUCCESS, StockAction, SEARCH_STOCK_BY_SYMBOL, SEARCH_STOCK_BY_SYMBOL_FAIL, GET_STOCK_INFO, GET_STOCK_INFO_SUCCESS, GET_STOCK_INFO_FAIL, CLEAR_SEARCH_LIST } from "./types/ActionTypes";
 const initialState: StockState= {
     searchLoading:false,

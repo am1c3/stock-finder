@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
-import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 import fontSizes from '../constants/fontSizes'
 const Wrapper = styled(Link)`
@@ -26,7 +25,6 @@ interface Props {
 export const NavBarItem : React.FunctionComponent<Props> = ({route}) =>  {
     let location = useLocation();
     let active = location.pathname.includes(route.to)
-    console.log(location.pathname, route.to)
     if(route.to === '/' && location.pathname !== route.to) {
         active = false
     }
