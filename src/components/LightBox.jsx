@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import colors from '../constants/colors'
 import fonts from '../constants/fonts'
 const Wrapper = styled.div`
     padding:24px 0px;

@@ -1,137 +1,92 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
-import Switch from 'react-switch'
-import Plot from 'react-plotly.js'
+
 import { connect } from 'react-redux'
 import { RootState } from '../../../store/types'
 import { getStockInfo } from '../StocksActions'
-import colors from '../../../constants/colors'
-import fonts from '../../../constants/fonts'
 import timezone from '../../../assets/icons/time.svg'
 import location from '../../../assets/icons/location.svg'
-import Select from '../../../components/Select'
 import Loader from '../../../components/Loader'
 import ErrorDialog from '../../../components/ErrorDialog'
 import arrowLeft from '../../../assets/icons/arrow-left.svg'
 import Plotly from '../graphs/Plotly'
 import D3Stock from '../graphs/D3Stock'
 import { getMedianInBuckets } from '../../../helpers/dataManipulation'
-import Slider from '../../../components/Slider'
-const Wrapper = styled.div`
-    display:flex;
-    flex-direction:column;
-    flex:1;
-    font-family:${fonts.primary};
-    color:white;
-`
-const TopSide = styled.aside`
-  display:flex;
-  padding:24px 48px;
-  align-items:center;
-  justify-content:space-between;
-  background-color:${colors.primary};
-  border-radius:25px;
-  min-height:100px;
-  @media only screen and (max-width: 500px) {
-    justify-content:center;
-    position:relative;
+import { StockValue } from '../types/StockInfo'
+import {
+  GoBack,
+  Details,
+  DetailsItem,
+  Symbol,
+  Icon,
+  TopSide,
+  BottomSide,
+  Wrapper
+} from './styles'
+import SinglePageFilters from '../SinglePageFilters'
+import { SingleOption } from '../../../components/Select'
+export const INTRADAY_INTERVALS = {
+  1: {
+    label: '1 min',
+    value: '1min'
+  },
+  5: {
+    label: '5 min',
+    value: '5min'
+  },
+  15: {
+    label: '15 min',
+    value: '15min'
+  },
+  30: {
+    label: '30 min',
+    value: '30min'
+  },
+  60: {
+    label: '60 min',
+    value: '60min'
+  },
+}
+export const STOCK_DATA_INTERVAL_TYPES = {
+  Daily: {
+    label: 'Daily',
+    value: 'TIME_SERIES_DAILY'
+  },
+  Intraday:
+  {
+    label: 'Intraday',
+    value: 'TIME_SERIES_INTRADAY'
+  },
+  Weekly:
+  {
+    label: 'Weekly',
+    value: 'TIME_SERIES_WEEKLY'
+  },
+  Monthly: {
+    label: 'Monthly',
+    value: 'TIME_SERIES_MONTHLY'
   }
-`
-const BottomSide = styled.div`
-  flex:1;
-  display:flex;
-  padding:24px;
-  flex-direction:column;
-  margin-top:12px;
-  background-color:${colors.primaryLight};
-  border-radius:5px;
-  align-items:center;
-`
-const Symbol = styled.div`
-  font-size:30px;
-  font-weight:bold;
-  letter-spacing:2px;
- 
-
-`
-const Details = styled.div`
-  @media only screen and (max-width: 500px) {
-  display:none;
-  }
-`
-const DetailsItem = styled.div`
-  display:flex;
-  font-size:18px;
-  align-items:center;
-`
-const Icon = styled.img`
-  margin-right:10px;
-  width:25px;
-  height:25px;
-`
-const Filters = styled.div`
-  width:100%;
-  display:flex;
-  margin-bottom:24px;
-  flex-wrap:wrap;
-  @media only screen and (max-width: 500px) {
-    flex-direction:column;
-  }
-
-`
-const FilterValue = styled.div`
-  min-height:40px;
-  display:flex;
-  align-items:center;
-`
-const FilterLabel = styled.label`
-  color:rgba(0,0,0,0.8);
-  margin-bottom:12px;
-
-`
-const Filter = styled.div`
-  display:flex;
-  flex-direction:column;
-  margin-right:12px;
-  margin-bottom:12px;
-  @media only screen and (max-width: 500px) {
-    margin-right:0;
-    margin-top:12px;
-  }
-`
-const GoBack = styled.img`
-  display:none;
-  width:50px;
-  height:50px;
-  @media only screen and (max-width: 500px) {
-    display:block;
-  }
-  position:absolute;
-  left:12px;
-  top:calc(50% - 25px);
-`
-
+}
 
 function SingleStockPage(props) {
+  const { getStockInfo, stockInfo, stockInfoError, stockInfoLoading } = props
+
   const history = useHistory()
+  const [startDate, setStartDate] = useState('')
+  const [intradayInterval, setIntradayInterval] = useState<SingleOption>(INTRADAY_INTERVALS[5])
+  const [endDate, setEndDate] = useState('')
   const [bucketSize, setBucketSize] = useState(3)
-  const [graphComponentType, setGraphComponentType] = useState(
-    {
-      label: 'D3',
-      value: 'd3'
-    },
-  )
-  const [graphType, setGraphType] = useState(
+  const [graphComponentType, setGraphComponentType] = useState<SingleOption>({
+    label: 'D3',
+    value: 'd3'
+  })
+  const [graphType, setGraphType] = useState<SingleOption>(
     {
       label: 'Candlesticks',
       value: 'candlesticks'
-    },
+    }
   )
-  const [type, setType] = useState({
-    label: 'Daily',
-    value: 'TIME_SERIES_DAILY'
-  })
+  const [type, setType] = useState(STOCK_DATA_INTERVAL_TYPES.Daily)
   const [showAverage, setShowAverage] = useState(false)
   const toggleAverage = () => {
     setShowAverage(!showAverage)
@@ -139,20 +94,37 @@ function SingleStockPage(props) {
   const { id } = useParams()
 
   useEffect(() => {
-    props.getStockInfo(type.value, id)
-  }, [type])
+    console.log(intradayInterval.value)
+    getStockInfo(type.value, id, intradayInterval.value)
+  }, [type, intradayInterval])
 
-  const { stockInfo, stockInfoError, stockInfoLoading } = props
-  const data = stockInfo.values.map((item, index) => ({
-    high: +item.high,
-    low: +item.low,
-    close: +item.close,
-    open: +item.open,
-    date: new Date(item.date)
-  }))
+  let data: StockValue[] = []
+  stockInfo.values.forEach((item) => {
+    let sDate = new Date(startDate)
+    let nDate = new Date(endDate)
+    if (!startDate && !endDate) {
+      data.push(item)
+    } else {
+      if (startDate && !endDate) {
+        if (sDate < item.date) {
+          data.push(item)
+        }
+      }
+      if (endDate && !startDate) {
+        if (nDate > item.date) {
+          data.push(item)
+        }
+      }
+      if (startDate && endDate) {
+        if (nDate > item.date && sDate < item.date) {
+          data.push(item)
+        }
+      }
+    }
+  })
   if (stockInfoError) {
     return <ErrorDialog description={stockInfoError} onClick={() => {
-      props.getStockInfo(type.value, id)
+      getStockInfo(type.value, id, intradayInterval.value)
     }} buttonText='Retry' />
   }
   const average = getMedianInBuckets(data, bucketSize, 'open')
@@ -177,79 +149,26 @@ function SingleStockPage(props) {
 
       </TopSide>
       <BottomSide>
-        <Filters>
-          <Filter>
-            <FilterLabel>Time frame</FilterLabel>
-            <FilterValue>
-              <Select
-                value={type}
-                onChange={(value) => setType(value)}
-                options={[
-                  {
-                    label: 'Daily',
-                    value: 'TIME_SERIES_DAILY'
-                  },
-                  {
-                    label: 'Weekly',
-                    value: 'TIME_SERIES_WEEKLY'
-                  },
-                  {
-                    label: 'Monthly',
-                    value: 'TIME_SERIES_MONTHLY'
-                  }
-                ]} />
-            </FilterValue>
-          </Filter>
-          <Filter>
-            <FilterLabel>Component type</FilterLabel>
-            <FilterValue>
-              <Select value={graphComponentType}
-                onChange={(value) => setGraphComponentType(value)}
-                options={[
-                  {
-                    label: 'Plotify',
-                    value: 'plotify'
-                  },
-                  {
-                    label: 'D3',
-                    value: 'd3'
-                  }
-                ]} />
-            </FilterValue>
-          </Filter>
-          {graphComponentType.value ==='d3' && <Filter>
-            <FilterLabel>Graph type</FilterLabel>
-            <FilterValue>
-              <Select value={graphType}
-                onChange={(value) => setGraphType(value)}
-                options={[
-                  {
-                    label: 'Candlesticks',
-                    value: 'candlesticks'
-                  },
-                  {
-                    label: 'Line',
-                    value: 'line'
-                  }
-                ]} />
-            </FilterValue>
-          </Filter>}
-          <Filter>
-            <FilterLabel>Show average</FilterLabel>
-            <FilterValue>
-              <Switch checked={showAverage} onChange={toggleAverage} onColor={colors.primary} />
-            </FilterValue>
-          </Filter>
-          {showAverage && <Filter>
-            <FilterLabel>Average bucket size</FilterLabel>
-            <FilterValue>
-              <Slider value={bucketSize} min={2} max={data.length} onChange={(value) => {setBucketSize(value)}}/>
-            </FilterValue>
-          </Filter>}
-
-        </Filters>
+        <SinglePageFilters
+          type={type}
+          setType={setType}
+          graphComponentType={graphComponentType}
+          setGraphComponentType={setGraphComponentType}
+          bucketSize={bucketSize}
+          setBucketSize={setBucketSize}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          data={data}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          showAverage={showAverage}
+          toggleAverage={toggleAverage}
+          graphType={graphType}
+          setGraphType={setGraphType}
+          intradayInterval={intradayInterval}
+          setIntradayInterval={setIntradayInterval}
+        />
         <div style={{ overflowX: 'scroll', maxWidth: '100%', width: '100%', minHeight: 200 }}>
-
           {
             stockInfoLoading ? <Loader /> :
               <>
@@ -258,7 +177,6 @@ function SingleStockPage(props) {
                     :
                     <Plotly data={data} showAverage={showAverage} averageData={average} averageValueLabel={'open'} />}
               </>
-
           }
         </div>
 

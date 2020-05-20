@@ -5,13 +5,12 @@ interface MeanPoint {
     mean: number;
 }
 export const getMedianInBuckets = (data: StockValue[], bucketSize:number, label:string) : StockValue[] => {
-    if(data.length == 0) {
+    if(data.length === 0) {
         return []
     }
     let newData: StockValue[] = []
 
     for(let i=0; i< data.length - bucketSize ; i++) {
-        let currentPoint = data[i]
         let currentMean = 0 
         for(let j = i ; j < i + bucketSize; j++) {
             currentMean += data[j][label]
@@ -23,6 +22,5 @@ export const getMedianInBuckets = (data: StockValue[], bucketSize:number, label:
         })
     }
     newData.push(data[data.length - 1])
-    console.log(newData, "new")
     return newData
 }
