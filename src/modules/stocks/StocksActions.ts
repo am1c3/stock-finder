@@ -12,7 +12,7 @@ import {
   GET_STOCK_INFO_SUCCESS,
   CLEAR_SEARCH_LIST
 } from './types/ActionTypes'
-import { STOCK_DATA_INTERVAL_TYPES, INTRADAY_INTERVALS, ALPHA_VENTAGE_TRANSLATE } from './constants'
+import { STOCK_DATA_INTERVAL_TYPES, ALPHA_VENTAGE_TRANSLATE } from './constants'
 export const clearSearchList = (): AppThunk => async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   dispatch({
     type: CLEAR_SEARCH_LIST
@@ -39,8 +39,11 @@ export const getStockInfo = ( type: string, symbol:string, interval:string): App
     return
   }
   try {
-    let url = `${ALPHA_VENTAGE_API_URL}&function=${type}&symbol=${symbol}&interval=${interval}`
-   
+
+    let url = `${ALPHA_VENTAGE_API_URL}&function=${type}&symbol=${symbol}`
+    if(type === STOCK_DATA_INTERVAL_TYPES.Intraday.value) {
+      url = `${ALPHA_VENTAGE_API_URL}&function=${type}&symbol=${symbol}&interval=${interval}`
+    }
     const result = await axios({
       method: 'get',
       url
