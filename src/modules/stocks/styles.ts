@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import fonts from '../../../constants/fonts'
-import colors from '../../../constants/colors'
+import { Link } from 'react-router-dom'
+import fonts from '../../constants/fonts'
+import colors from '../../constants/colors'
 
 const Wrapper = styled.div`
     display:flex;
@@ -96,6 +97,49 @@ const GoBack = styled.img`
   left:12px;
   top:calc(50% - 25px);
 `
+
+const SingleSearchWrapper = styled(Link)`
+    background-color:${colors.primaryLight};
+    border-radius:25px;
+    text-decoration:none;
+    color:black;
+    padding:24px 48px;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+    font-family:${fonts.primary};
+    cursor:pointer;
+    @media only screen and (max-width: 600px) {
+        padding:24px 24px;
+      }
+
+`
+const SingleSearchLeftSide = styled.div`
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    flex:1;
+
+`
+const SingleSearchName = styled.div`
+    font-size:18px;
+    margin-top:12px;
+`
+const SingleSearchRightSide = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    flex:1;
+    @media only screen and (max-width: 950px) {
+        display:none;
+    }
+`
+const StockSearchNoResults = styled.div`
+  text-align:center;
+  font-family:${fonts.primary};
+  font-size:30px;
+  margin-top:100px;
+`
 export {
   GoBack,
   Filter,
@@ -108,5 +152,10 @@ export {
   Symbol,
   TopSide,
   BottomSide,
-  Wrapper
+  Wrapper,
+  SingleSearchName,
+  SingleSearchWrapper,
+  SingleSearchLeftSide,
+  SingleSearchRightSide,
+  StockSearchNoResults
 }

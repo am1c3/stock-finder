@@ -12,7 +12,7 @@ import {
   GET_STOCK_INFO_SUCCESS,
   CLEAR_SEARCH_LIST
 } from './types/ActionTypes'
-import { STOCK_DATA_INTERVAL_TYPES, INTRADAY_INTERVALS } from './pages/SingleStockPage'
+import { STOCK_DATA_INTERVAL_TYPES, INTRADAY_INTERVALS, ALPHA_VENTAGE_TRANSLATE } from './constants'
 export const clearSearchList = (): AppThunk => async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   dispatch({
     type: CLEAR_SEARCH_LIST
@@ -45,49 +45,48 @@ export const getStockInfo = ( type: string, symbol:string, interval:string): App
       method: 'get',
       url
     })
-    if(result.data['Error Message']) {
+    if(ALPHA_VENTAGE_TRANSLATE.getError(result)) {
       dispatch({
         type: GET_STOCK_INFO_FAIL,
-        payload: result.data['Error Message']
+        payload: ALPHA_VENTAGE_TRANSLATE.getError(result)
       })
       return
     }
-    if(result.data['Note']) {
+    if(ALPHA_VENTAGE_TRANSLATE.getNote(result)) {
       dispatch({
         type: GET_STOCK_INFO_FAIL,
-        payload: result.data['Note']
+        payload: ALPHA_VENTAGE_TRANSLATE.getNote(result)
       })
       return
     }
-      let dataType = 'Time Series (Daily)'
-      if(type === 'TIME_SERIES_MONTHLY') {
-        dataType = 'Monthly Time Series'
+      let dataType =  ALPHA_VENTAGE_TRANSLATE.daily
+      if(type === STOCK_DATA_INTERVAL_TYPES.Monthly.value) {
+        dataType = ALPHA_VENTAGE_TRANSLATE.monthly
       }
-      if(type === 'TIME_SERIES_WEEKLY') {
-        dataType = 'Weekly Time Series'
+      if(type === STOCK_DATA_INTERVAL_TYPES.Weekly.value) {
+        dataType = ALPHA_VENTAGE_TRANSLATE.weekly
 
       }
-      if(type === 'TIME_SERIES_INTRADAY') {
-        dataType = `Time Series (${interval})`
-
+      if(type === STOCK_DATA_INTERVAL_TYPES.Intraday.value) {
+        dataType = ALPHA_VENTAGE_TRANSLATE.intraday(interval)
       }
       console.log(result.data, dataType)
       const resultValues = result.data[dataType]
       // parse data
       const payload= {
         meta: {
-          info:result.data['Meta Data']['1. Information'],
-          symbol:result.data['Meta Data']['2. Symbol'],
-          lastRefreshed:result.data['Meta Data']['3. Last Refreshed'],
-          timezone:result.data['Meta Data']['5. Time Zone'] || result.data['Meta Data']['4. Time Zone']
+          info:ALPHA_VENTAGE_TRANSLATE.getInfo(result.data),
+          symbol: ALPHA_VENTAGE_TRANSLATE.getSymbol(result.data),
+          lastRefreshed:ALPHA_VENTAGE_TRANSLATE.getLastRefreshed(result.data),
+          timezone:ALPHA_VENTAGE_TRANSLATE.getTimezone(result.data)
         },
         values: Object.keys(resultValues).map(key => ({
           date: new Date(key),
-          open: +resultValues[key]['1. open'],
-          close: +resultValues[key]['4. close'],
-          high: +resultValues[key]['2. high'],
-          low: +resultValues[key]['3. low'],
-          volume: +resultValues[key]['5. volume'],
+          open: ALPHA_VENTAGE_TRANSLATE.getOpen(resultValues, key),
+          close: ALPHA_VENTAGE_TRANSLATE.getClose(resultValues, key),
+          high: ALPHA_VENTAGE_TRANSLATE.getHigh(resultValues, key),
+          low: ALPHA_VENTAGE_TRANSLATE.getLow(resultValues, key),
+          volume: ALPHA_VENTAGE_TRANSLATE.getVolume(resultValues, key),
         }))
       }
       localStorage.clear()
@@ -110,7 +109,7 @@ export const getStockInfo = ( type: string, symbol:string, interval:string): App
     console.log(e)
     dispatch({
       type: GET_STOCK_INFO_FAIL,
-      payload:'Something went wrong'
+      payload:ALPHA_VENTAGE_TRANSLATE.defaultError
     })
   }
 }
@@ -128,34 +127,34 @@ export const searchStocksBySymbol = ( keywords:string): AppThunk => async (dispa
     })
     const {bestMatches} = result.data
    
-    if(result.data['Error Message']) {
+    if(ALPHA_VENTAGE_TRANSLATE.getError(result)) {
       dispatch({
         type: SEARCH_STOCK_BY_SYMBOL_FAIL,
-        payload: result.data['Error Message']
+        payload: ALPHA_VENTAGE_TRANSLATE.getError(result)
       })
       return
     }
-    if(result.data['Note']) {
+    if(ALPHA_VENTAGE_TRANSLATE.getNote(result)) {
       dispatch({
         type: SEARCH_STOCK_BY_SYMBOL_FAIL,
-        payload: result.data['Note']
+        payload: ALPHA_VENTAGE_TRANSLATE.getNote(result)
       })
       return
     }
     dispatch({
       type: SEARCH_STOCK_BY_SYMBOL_SUCCESS,
       payload: bestMatches.map(item => ({
-        name: item['2. name'],
-        location: item['4. region'],
-        timezone: item['7. timezone'],
-        currency: item['8. currency'],
-        symbol: item['1. symbol'],
+        name: ALPHA_VENTAGE_TRANSLATE.getSearchName(item),
+        location: ALPHA_VENTAGE_TRANSLATE.getSearchLocation(item),
+        timezone: ALPHA_VENTAGE_TRANSLATE.getSearchTimezone(item),
+        currency: ALPHA_VENTAGE_TRANSLATE.getSearchCurrency(item),
+        symbol: ALPHA_VENTAGE_TRANSLATE.getSearchSymbol(item),
       }))
     })
   } catch (e) {
     dispatch({
       type: SEARCH_STOCK_BY_SYMBOL_FAIL,
-      payload: 'Something went wrong'
+      payload: ALPHA_VENTAGE_TRANSLATE.searchDefaultError
     })
   }
 }
