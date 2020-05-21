@@ -70,7 +70,6 @@ export const getStockInfo = ( type: string, symbol:string, interval:string): App
       if(type === STOCK_DATA_INTERVAL_TYPES.Intraday.value) {
         dataType = ALPHA_VENTAGE_TRANSLATE.intraday(interval)
       }
-      console.log(result.data, dataType)
       const resultValues = result.data[dataType]
       // parse data
       const payload= {
@@ -106,7 +105,6 @@ export const getStockInfo = ( type: string, symbol:string, interval:string): App
         type: GET_STOCK_INFO_SUCCESS,
         payload })
   } catch (e) {
-    console.log(e)
     dispatch({
       type: GET_STOCK_INFO_FAIL,
       payload:ALPHA_VENTAGE_TRANSLATE.defaultError

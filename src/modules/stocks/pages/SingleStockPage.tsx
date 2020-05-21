@@ -46,7 +46,6 @@ function SingleStockPage(props) {
   const { id } = useParams()
 
   useEffect(() => {
-    console.log(intradayInterval.value)
     getStockInfo(type.value, id, intradayInterval.value)
   }, [type, intradayInterval])
 
