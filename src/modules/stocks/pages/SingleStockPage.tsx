@@ -22,51 +22,11 @@ import {
   TopSide,
   BottomSide,
   Wrapper
-} from './styles'
+} from '../styles'
 import SinglePageFilters from '../SinglePageFilters'
 import { SingleOption } from '../../../components/Select'
-export const INTRADAY_INTERVALS = {
-  1: {
-    label: '1 min',
-    value: '1min'
-  },
-  5: {
-    label: '5 min',
-    value: '5min'
-  },
-  15: {
-    label: '15 min',
-    value: '15min'
-  },
-  30: {
-    label: '30 min',
-    value: '30min'
-  },
-  60: {
-    label: '60 min',
-    value: '60min'
-  },
-}
-export const STOCK_DATA_INTERVAL_TYPES = {
-  Daily: {
-    label: 'Daily',
-    value: 'TIME_SERIES_DAILY'
-  },
-  Intraday:
-  {
-    label: 'Intraday',
-    value: 'TIME_SERIES_INTRADAY'
-  },
-  Weekly:
-  {
-    label: 'Weekly',
-    value: 'TIME_SERIES_WEEKLY'
-  },
-  Monthly: {
-    label: 'Monthly',
-    value: 'TIME_SERIES_MONTHLY'
-  }
-}
+import { STOCK_DATA_INTERVAL_TYPES, INTRADAY_INTERVALS, GRAPH_COMPONENT_TYPE, GRAPH_TYPE } from '../constants'
+
 
 function SingleStockPage(props) {
   const { getStockInfo, stockInfo, stockInfoError, stockInfoLoading } = props
@@ -76,16 +36,8 @@ function SingleStockPage(props) {
   const [intradayInterval, setIntradayInterval] = useState<SingleOption>(INTRADAY_INTERVALS[5])
   const [endDate, setEndDate] = useState('')
   const [bucketSize, setBucketSize] = useState(3)
-  const [graphComponentType, setGraphComponentType] = useState<SingleOption>({
-    label: 'D3',
-    value: 'd3'
-  })
-  const [graphType, setGraphType] = useState<SingleOption>(
-    {
-      label: 'Candlesticks',
-      value: 'candlesticks'
-    }
-  )
+  const [graphComponentType, setGraphComponentType] = useState<SingleOption>(GRAPH_COMPONENT_TYPE.d3)
+  const [graphType, setGraphType] = useState<SingleOption>(GRAPH_TYPE.Candlesticks)
   const [type, setType] = useState(STOCK_DATA_INTERVAL_TYPES.Daily)
   const [showAverage, setShowAverage] = useState(false)
   const toggleAverage = () => {
