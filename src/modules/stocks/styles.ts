@@ -100,9 +100,9 @@ const GoBack = styled.img`
 
 const SingleSearchWrapper = styled(Link)`
     background-color:${colors.primaryLight};
-    border-radius:25px;
     text-decoration:none;
     color:black;
+    border-radius:5px;
     padding:24px 48px;
     display:flex;
     justify-content:space-between;
@@ -140,9 +140,23 @@ const StockSearchNoResults = styled.div`
   font-size:30px;
   margin-top:100px;
 `
+const StockSearchNoResultsImg = styled.img`
+    max-width:70%;
+    @media only screen and (max-width: 500px) {
+      max-width:100%;
+    }
+`
+const StockSearchNoResultsWrapper = styled.div`
+    flex:1;
+    display:flex;
+    justify-content:center;
+    
+`
 export {
   GoBack,
   Filter,
+  StockSearchNoResultsWrapper,
+  StockSearchNoResultsImg,
   FilterLabel,
   Filters,
   FilterValue,

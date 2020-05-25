@@ -4,7 +4,8 @@ import SingleSearchResult from './SingleSearchResult'
 import { SearchStock } from './types/SearchStock'
 import { STOCKS_PAGE_ROUTE } from '../../router/routes'
 import Loader from '../../components/Loader'
-import { StockSearchNoResults } from './styles'
+import { StockSearchNoResultsWrapper, StockSearchNoResultsImg } from './styles'
+import searchDef from '../../assets/images/search_default.svg'
 interface Props {
   results: SearchStock[];
   loading:boolean;
@@ -22,9 +23,9 @@ const StockSearchResults: React.FunctionComponent<Props> = ({ results, loading }
         />
       ))}
       {results.length === 0 && !loading &&
-      <StockSearchNoResults>
-        Type any symbol to search a stock
-      </StockSearchNoResults>
+      <StockSearchNoResultsWrapper>
+        <StockSearchNoResultsImg src={searchDef}  />
+      </StockSearchNoResultsWrapper>
       }
     </LightBox>
   )
