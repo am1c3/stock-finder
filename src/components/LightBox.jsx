@@ -5,7 +5,11 @@ const Wrapper = styled.div`
     padding:24px 0px;
     border-radius:5px;
     flex:1;
-  
+    width:70%;
+    align-self:center;
+    @media only screen and (max-width: 500px) {
+      width:100%;
+    }
 `
 
 const Title = styled.div`

@@ -83,7 +83,7 @@ function SingleStockPage(props) {
     <Wrapper>
       <TopSide>
         <GoBack onClick={() => history.goBack()} src={arrowLeft} />
-        <Symbol>{stockInfo.meta.symbol}</Symbol>
+        <Symbol style={{color:'white'}}>{stockInfo.meta.symbol}</Symbol>
         <Details>
           <DetailsItem>
             <Icon src={location} />

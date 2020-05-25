@@ -7,13 +7,15 @@ const DateWrapper = styled.input`
     -webkit-appearance: none;
     height: 36px;
     width: 100%;
-    border: 1px solid  ${colors.border};
     border-radius: 4px;
     padding: 12px;
     font-size: 14px;
     color:${colors.text};
     font-family: ${fonts.primary};
     background-color:white;
+    box-shadow:1px 4px 10px rgba(0,0,0,0.15);
+    border:none;
+
 `
 interface Props {
     value: string;
