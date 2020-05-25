@@ -128,6 +128,7 @@ const SingleSearchLeftSide = styled.div`
 const SingleSearchName = styled.div`
     font-size:18px;
     margin-top:12px;
+    color:black;
 `
 const SingleSearchRightSide = styled.div`
     display:flex;
