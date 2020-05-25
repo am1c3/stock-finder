@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800.23" height="409" viewBox="0 0 800.23 409">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.703" y1="0.494" x2="0.051" y2="0.827" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="gray"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="0.703" y1="0.494" x2="0.051" y2="0.827" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e9f2f7" stop-opacity="0"/>
+      <stop offset="1" stop-color="#e9f2f7"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_5" data-name="Group 5" transform="translate(-577.83 -395.987)">
+    <rect id="Rectangle_6" data-name="Rectangle 6" width="586.709" height="149.381" transform="translate(791.351 487.031)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_8" data-name="Rectangle 8" width="586.709" height="149.381" transform="translate(790.698 655.606)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_7" data-name="Rectangle 7" width="586.709" height="149.381" transform="translate(791.351 487.031)" fill="url(#linear-gradient-3)"/>
+    <rect id="Rectangle_9" data-name="Rectangle 9" width="586.709" height="149.381" transform="translate(790.698 655.606)" fill="url(#linear-gradient-3)"/>
+    <text id="TSLA" transform="translate(823.698 532.97)" font-size="50" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan x="0" y="48">TSLA</tspan></text>
+    <text id="AMZN_" data-name="AMZN
+" transform="translate(823.046 701.545)" font-size="50" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan x="0" y="48">AMZN</tspan></text>
+    <path id="Path_77" data-name="Path 77" d="M2370.23,646.893c-41.434-23.386-57.249-58.564-70.137-89.146-26.44-62.738-15.537-120.8-15.537-120.8l36.882,14.9-48.082-69.861-61.526,69.861,41.479-14.9s-7.692,60.506,24.05,120.8c17.09,32.462,45.84,59.318,92.872,89.146" transform="translate(-1634 14)" fill="#e9f2f7"/>
+  </g>
+</svg>
