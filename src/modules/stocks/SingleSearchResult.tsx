@@ -20,16 +20,14 @@ const SingleSearchResult: React.FunctionComponent<Props> = (props) =>  {
             </SingleSearchName>
             </SingleSearchLeftSide>
             <SingleSearchRightSide>
-                <div>
 
-            <div>
-                {item.location}
-            </div>
-            <div style={{height:12}} />
-            <div>
-                {item.currency}
-            </div>
-            </div>
+                <div>
+                    {item.location}
+                </div>
+                <div style={{height:12}} />
+                <div>
+                    {item.currency}
+                </div>
 
             </SingleSearchRightSide>
            
