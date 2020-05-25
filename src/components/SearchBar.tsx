@@ -5,11 +5,16 @@ import clear from '../assets/icons/clear.svg'
 import colors from '../constants/colors'
 const InputWrapper = styled.div`
     position:relative;
-    width:100%;
+    width:70%;
+    align-self:center;
+    @media only screen and (max-width: 500px) {
+        width:100%;
+    }
 `
 const Input = styled.input`
     border-radius:40px;
     padding:0px 48px;
+    box-shadow:1px 1px 20px rgba(0,0,0,0.3);
     display:flex;
     align-items:center;
     justify-content:center;

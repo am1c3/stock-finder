@@ -9,6 +9,10 @@ const Wrapper = styled.div`
     flex:1;
     font-family:${fonts.primary};
     color:white;
+    border-radius:25px;
+    box-shadow:1px 1px 20px rgba(42,95,123,0.15);
+    overflow:hidden;
+
 `
 const TopSide = styled.aside`
   display:flex;
@@ -16,8 +20,7 @@ const TopSide = styled.aside`
   align-items:center;
   justify-content:space-between;
   background-color:${colors.primary};
-  border-radius:25px;
-  min-height:100px;
+  min-height:125px;
   @media only screen and (max-width: 500px) {
     justify-content:center;
     position:relative;
@@ -28,15 +31,14 @@ const BottomSide = styled.div`
   display:flex;
   padding:24px;
   flex-direction:column;
-  margin-top:12px;
-  background-color:${colors.primaryLight};
   border-radius:5px;
   align-items:center;
 `
 const Symbol = styled.div`
   font-size:30px;
   font-weight:bold;
-  letter-spacing:2px;
+  letter-spacing:2px; 
+  color:${colors.primary};
  
 
 `
@@ -78,12 +80,12 @@ const FilterLabel = styled.label`
 const Filter = styled.div`
   display:flex;
   flex-direction:column;
-  margin-right:12px;
+  margin-right:24px;
   min-width:200px;
-  margin-bottom:12px;
+  margin-bottom:24px;
   @media only screen and (max-width: 500px) {
     margin-right:0;
-    margin-top:12px;
+    margin-top:24px;
   }
 `
 const GoBack = styled.img`
@@ -99,7 +101,8 @@ const GoBack = styled.img`
 `
 
 const SingleSearchWrapper = styled(Link)`
-    background-color:${colors.primaryLight};
+    box-shadow:1px 1px 20px rgba(0,0,0,0.1);
+    box-shadow: 1px 1px 20px rgba(42, 95, 123,0.15);
     text-decoration:none;
     color:black;
     border-radius:5px;
@@ -109,6 +112,7 @@ const SingleSearchWrapper = styled(Link)`
     margin-bottom:12px;
     font-family:${fonts.primary};
     cursor:pointer;
+    color:rgb(100,100,100);
     @media only screen and (max-width: 600px) {
         padding:24px 24px;
       }

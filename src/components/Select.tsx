@@ -22,6 +22,13 @@ const SelectWrapper = styled.div`
     .react-select-container {
       min-width:200px;
     }
+    .react-select__control {
+      border:none;
+      box-shadow:1px 4px 10px rgba(0,0,0,0.15);
+    }
+    .react-select__indicator-separator {
+      display:none;
+    }
     @media only screen and (max-width: 500px) {
       width:100%;
     }
